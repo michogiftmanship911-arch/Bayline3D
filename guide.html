@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How to use Bayline 3D</title>
+<meta name="description" content="What every button, slider, and readout in the Bayline 3D viewer does and what it means.">
+<meta name="theme-color" content="#050d1a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A192F'/%3E%3Crect x='10' y='10' width='12' height='12' rx='2' fill='%2364FFDA'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+.page { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; padding-top: 64px; align-items: start; }
+.toc { position: sticky; top: 92px; display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+.toc p { margin: 0 0 12px; }
+.toc a { color: var(--slate); text-decoration: none; padding: 7px 0 7px 14px; border-left: 1px solid var(--line); }
+.toc a:hover, .toc a.on { color: var(--white); border-left-color: var(--cyan); }
+.intro { display: flex; flex-direction: column; gap: 20px; padding-bottom: 24px; min-width: 0; }
+.group { padding-top: 64px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.group > h2 { margin-bottom: 8px; }
+.group > .sub { color: var(--slate); margin: 0 0 12px; max-width: 60ch; }
+.entry { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 8px 32px; padding: 20px 0; border-top: 1px solid var(--line); }
+.entry dt { font-weight: 500; color: var(--white); display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.entry dt .tag { font: 400 11px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--cyan); }
+.entry dd { margin: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.entry dd p { margin: 0; max-width: 64ch; }
+.entry dd .means { color: var(--slate); }
+.entry dd .means b { color: var(--text); font-weight: 500; }
+dl { margin: 0; }
+.callout { border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; background: rgba(255, 255, 255, .02); color: var(--slate); max-width: 64ch; }
+.callout b { color: var(--white); font-weight: 500; }
+.trouble .entry dt { font-weight: 400; }
+@media (max-width: 860px) {
+  .page { grid-template-columns: 1fr; gap: 0; padding-top: 40px; }
+  .toc { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .toc p { width: 100%; margin-bottom: 4px; }
+  .toc a { border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+  .entry { grid-template-columns: 1fr; gap: 10px; }
+}
+</style>
+<script src="site-config.js"></script>
+<script src="gate.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html"><i></i>Bayline 3D</a>
+  <nav aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="guide.html" aria-current="page">How to use</a>
+    <a href="index.html#contact">Contact</a>
+    <a class="cta" href="viewer.html">Open viewer</a>
+  </nav>
+</div></header>
+
+<main class="wrap page">
+  <aside class="toc" aria-label="On this page">
+    <p class="eyebrow">Contents</p>
+    <a href="#basics">Moving around</a>
+    <a href="#model">Model</a>
+    <a href="#display">Display</a>
+    <a href="#material">Material</a>
+    <a href="#lighting">Lighting</a>
+    <a href="#camera">Camera</a>
+    <a href="#readouts">Readouts</a>
+    <a href="#keys">Keyboard</a>
+    <a href="#help">Troubleshooting</a>
+  </aside>
+
+  <div>
+    <div class="intro">
+      <p class="eyebrow">Guide</p>
+      <h1>How to use the viewer</h1>
+      <p class="lede">Every control lives in the panel on the right of the viewer. Each entry below says what the control does and what it means for the model you are looking at.</p>
+      <p class="callout"><b>On a phone?</b> The panel sits at the bottom of the screen as a sheet. Tap the arrow in its header to collapse it and see the full model.</p>
+    </div>
+
+    <section class="group" id="basics">
+      <h2>Moving around</h2>
+      <p class="sub">The camera orbits a point at the centre of the model. It keeps gliding for a moment after you let go, which makes movement feel smooth.</p>
+      <dl>
+        <div class="entry"><dt>Orbit<span class="tag">Left-drag · one finger</span></dt><dd><p>Rotate around the model.</p><p class="means"><b>Means:</b> you move the camera, not the model. Lights stay fixed in the scene, so reflections slide across surfaces as you orbit.</p></dd></div>
+        <div class="entry"><dt>Zoom<span class="tag">Scroll · pinch</span></dt><dd><p>Move closer to or further from the model.</p><p class="means"><b>Means:</b> zoom stops at a minimum and maximum distance, so you cannot clip through the model or lose it in the distance.</p></dd></div>
+        <div class="entry"><dt>Pan<span class="tag">Right-drag · two fingers</span></dt><dd><p>Slide the view sideways or up and down.</p><p class="means"><b>Means:</b> the point you orbit around moves with you, which lets you inspect an area away from the centre, such as a wheel or a mirror.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="model">
+      <h2>Model</h2>
+      <p class="sub">Choose what is on the stage.</p>
+      <dl>
+        <div class="entry"><dt>Open .glb / .gltf file<span class="tag">Button · drag and drop</span></dt><dd><p>Pick a 3D file from your device, or drop it anywhere on the page. The viewer centres it, scales its longest side to fit, and rests it on the floor.</p><p class="means"><b>Means:</b> a <code>.glb</code> is a single self-contained file. A <code>.gltf</code> usually comes with a <code>.bin</code> file and texture images, so select all of them together in the picker.</p></dd></div>
+        <div class="entry"><dt>BMW M4 GT3<span class="tag">Button</span></dt><dd><p>Reloads the sample race car.</p><p class="means"><b>Means:</b> use it to return to the starting model after trying your own files.</p></dd></div>
+        <div class="entry"><dt>Procedural<span class="tag">Button</span></dt><dd><p>Builds a mechanical sculpture in code: gimbal rings, gears, and a glowing core inside a glass shell.</p><p class="means"><b>Means:</b> it needs no file, so it is a quick way to see how the material and lighting controls behave on metal, glass, and glow.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="display">
+      <h2>Display</h2>
+      <p class="sub">How the model and the space around it are drawn.</p>
+      <dl>
+        <div class="entry"><dt>Wireframe<span class="tag">Switch · W</span></dt><dd><p>Draws only the edges of every triangle instead of solid surfaces.</p><p class="means"><b>Means:</b> you see how the model is built. Dense, even lines mean detailed geometry. Large flat areas with few lines mean simple geometry.</p></dd></div>
+        <div class="entry"><dt>Auto-rotate<span class="tag">Switch · R</span></dt><dd><p>Slowly orbits the camera around the model.</p><p class="means"><b>Means:</b> good for a showcase view. Turn it off when you want to hold still and inspect one area.</p></dd></div>
+        <div class="entry"><dt>Floor grid<span class="tag">Switch</span></dt><dd><p>Shows or hides the cyan grid under the model.</p><p class="means"><b>Means:</b> the grid gives a sense of scale and ground level. Lines are brighter every fifth square. The model is always scaled so its longest side is about 4.6 squares.</p></dd></div>
+        <div class="entry"><dt>Navy · Graphite · Void<span class="tag">Background</span></dt><dd><p>Switches the backdrop behind the model.</p><p class="means"><b>Means:</b> this changes mood and contrast only. Reflections on the model come from the lighting environment, which stays the same. Void is best for judging glow, and Graphite for dark paint.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="material">
+      <h2>Material</h2>
+      <p class="sub">A material is how a surface reacts to light. These controls are greyed out when they would have no effect, for example on a loaded file until you turn override on.</p>
+      <dl>
+        <div class="entry"><dt>Override materials<span class="tag">Switch · loaded files</span></dt><dd><p>Replaces every material in the file with one adjustable physical material. Turn it off to bring back the originals.</p><p class="means"><b>Means:</b> the original file keeps its own paint, glass, tyres, and textures, so the sliders below cannot change them separately. Override trades that detail for a single surface you can tune, which suits comparing finishes.</p></dd></div>
+        <div class="entry"><dt>Color<span class="tag">Colour picker</span></dt><dd><p>Sets the base colour of the adjustable material.</p><p class="means"><b>Means:</b> on the procedural model it tints the metal parts. The glowing parts keep their cyan.</p></dd></div>
+        <div class="entry"><dt>Metalness<span class="tag">Slider · 0 to 1</span></dt><dd><p>Controls how metallic the surface is.</p><p class="means"><b>Means:</b> 0 behaves like plastic or paint, 1 like bare metal. Metals reflect their surroundings and tint the reflection with their own colour.</p></dd></div>
+        <div class="entry"><dt>Roughness<span class="tag">Slider · 0 to 1</span></dt><dd><p>Controls how sharp or blurry reflections are.</p><p class="means"><b>Means:</b> 0 is a mirror, 1 is fully matte. Brushed metal sits around 0.4 to 0.6, polished chrome near 0.05.</p></dd></div>
+        <div class="entry"><dt>Clearcoat<span class="tag">Slider · 0 to 1</span></dt><dd><p>Adds a thin glossy layer on top of the base material.</p><p class="means"><b>Means:</b> this is the lacquer on car paint. The base can stay somewhat rough while the top layer gives a sharp, wet-looking highlight.</p></dd></div>
+        <div class="entry"><dt>Transmission<span class="tag">Slider · 0 to 1</span></dt><dd><p>Lets light pass through the surface so you can see through it.</p><p class="means"><b>Means:</b> 0 is opaque, 1 is clear like glass. On the procedural model it controls how see-through the shell around the core is. Transmission is expensive to draw, so frame rate can drop on slower devices.</p></dd></div>
+        <div class="entry"><dt>Emissive glow<span class="tag">Slider · 0 to 5</span></dt><dd><p>Sets how brightly self-lit parts shine. The glow pulses gently.</p><p class="means"><b>Means:</b> emissive surfaces give off light instead of only reflecting it. On the procedural model it drives the core, the rings, and the nodes. With override on for a loaded file it adds a faint cyan glow to the whole surface.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="lighting">
+      <h2>Lighting</h2>
+      <p class="sub">The viewer uses a studio rig: a main light that casts shadows, two coloured edge lights from behind, and a soft environment for reflections.</p>
+      <dl>
+        <div class="entry"><dt>Key light<span class="tag">Slider</span></dt><dd><p>Brightness of the main light.</p><p class="means"><b>Means:</b> it is the only light that casts the shadow on the floor. Raising it deepens shadows and highlights. Lowering it flattens the look.</p></dd></div>
+        <div class="entry"><dt>Shadow softness<span class="tag">Slider</span></dt><dd><p>How blurry the edge of the floor shadow is.</p><p class="means"><b>Means:</b> low values give a crisp, sunlit shadow. High values look like a large soft box in a studio.</p></dd></div>
+        <div class="entry"><dt>Rim accents<span class="tag">Slider</span></dt><dd><p>Brightness of the cyan and blue lights placed behind and beside the model, plus a small cyan light in front.</p><p class="means"><b>Means:</b> rim light traces the outline of the shape and separates it from the background. It is how silhouettes and edges stand out.</p></dd></div>
+        <div class="entry"><dt>Ambient + env<span class="tag">Slider</span></dt><dd><p>Strength of the soft fill light and of the environment that surfaces reflect.</p><p class="means"><b>Means:</b> this lifts shadowed areas and makes glossy parts pick up more of the surrounding room. At 0, only the direct lights remain.</p></dd></div>
+        <div class="entry"><dt>Exposure<span class="tag">Slider</span></dt><dd><p>Overall brightness of the final image, like a camera setting.</p><p class="means"><b>Means:</b> if highlights look blown out or the whole scene looks dim, adjust exposure before changing individual lights.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="camera">
+      <h2>Camera</h2>
+      <dl>
+        <div class="entry"><dt>Front · Side · Top · 3/4<span class="tag">Buttons</span></dt><dd><p>Fly the camera to a standard viewpoint at a distance that fits the whole model.</p><p class="means"><b>Means:</b> front and side are flat views for checking proportions. Top looks straight down. 3/4 is the classic showroom angle.</p></dd></div>
+        <div class="entry"><dt>Reset camera<span class="tag">Button · F</span></dt><dd><p>Returns to the default framing for the current model.</p><p class="means"><b>Means:</b> use it if you zoom or pan away and lose the model.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="readouts">
+      <h2>Readouts</h2>
+      <p class="sub">The four small cards at the bottom left of the viewer describe the loaded model and how hard your device is working.</p>
+      <dl>
+        <div class="entry"><dt>Meshes</dt><dd><p>The number of separate drawable pieces in the model.</p><p class="means"><b>Means:</b> each piece costs the device a little work. Models with thousands of meshes can feel heavier than their triangle count suggests.</p></dd></div>
+        <div class="entry"><dt>Triangles</dt><dd><p>The total count of triangles that make up every surface.</p><p class="means"><b>Means:</b> a measure of detail. Under about 500k is light, and several million can slow down phones.</p></dd></div>
+        <div class="entry"><dt>Materials</dt><dd><p>How many distinct surface definitions the model uses.</p><p class="means"><b>Means:</b> paint, glass, rubber, and carbon fibre would each count as one. Fewer materials generally render faster.</p></dd></div>
+        <div class="entry"><dt>FPS</dt><dd><p>Frames drawn per second, updated twice a second.</p><p class="means"><b>Means:</b> 60 is smooth. Below about 30 the scene is too heavy for the device. Lower the shadow softness, turn off transmission, or close other tabs.</p></dd></div>
+        <div class="entry"><dt>Bounds (X / Y / Z)</dt><dd><p>The size of the model in the file's own units, measured before the viewer scales it to fit.</p><p class="means"><b>Means:</b> glTF files are defined in metres, so 4.57 means 4.57 m. X is width, Y is height, and Z is depth in the file's own axes. The scale applied to fit the stage is not shown here.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group" id="keys">
+      <h2>Keyboard</h2>
+      <dl>
+        <div class="entry"><dt>W</dt><dd><p>Toggle wireframe.</p></dd></div>
+        <div class="entry"><dt>R</dt><dd><p>Toggle auto-rotate.</p></dd></div>
+        <div class="entry"><dt>F</dt><dd><p>Reset the camera.</p></dd></div>
+      </dl>
+    </section>
+
+    <section class="group trouble" id="help">
+      <h2>Troubleshooting</h2>
+      <dl>
+        <div class="entry"><dt>My model will not load</dt><dd><p>Check that the file ends in <code>.glb</code> or <code>.gltf</code>. For a <code>.gltf</code>, select its <code>.bin</code> and texture files at the same time. Files compressed with Draco or KTX2 are not supported, so re-export them without that compression.</p></dd></div>
+        <div class="entry"><dt>The model looks black or flat</dt><dd><p>Raise <b>Ambient + env</b> and <b>Exposure</b>. If the file has no textures, turn on <b>Override materials</b> and pick a colour.</p></dd></div>
+        <div class="entry"><dt>It is slow or stuttering</dt><dd><p>Turn off <b>Wireframe</b>, set <b>Transmission</b> to 0, and lower <b>Shadow softness</b>. Very large models are hardest on phones.</p></dd></div>
+        <div class="entry"><dt>I am sent back to the home page</dt><dd><p>The viewer is locked. Enter the password on the home page, or <a href="index.html#contact">email Michael</a> to request it.</p></dd></div>
+      </dl>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap">
+  <span id="foot"></span>
+  <span><a href="index.html">Home</a> &nbsp;·&nbsp; <a href="index.html#contact">Contact</a></span>
+</footer>
+
+<script>
+(function () {
+  var C = window.BAYLINE;
+  document.getElementById('foot').textContent = '© ' + new Date().getFullYear() + ' ' + C.brand + '. Access by request.';
+  // highlight the current section in the contents list
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); }); });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    links.forEach(function (a) { var s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

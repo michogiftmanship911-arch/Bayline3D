@@ -1,108 +1,49 @@
-# Bayline3D
-Private 3D model viewer built with Three.js. Drag-and-drop .glb/.gltf, studio lighting, material and wireframe controls, password-gated access, and a built-in usage guide. threejs, webgl, 3d-viewer, gltf, glb, model-viewer, javascript, static-site
-# Bayline 3D
+# Bayline 3D site
 
-A private 3D model viewer for engineering and automotive assets, built with Three.js. Load a `.glb` or `.gltf` file, light it with a studio rig, strip it back to wireframe, and tune its materials in real time. Access to the viewer is gated by a password that visitors request by email.
+Pages:
 
-**Live site:** [your-site-link-here]
-
-## Features
-
-- **Model loading:** drag and drop or pick `.glb` / `.gltf` files. Models are centred, scaled to fit, and rested on the floor automatically.
-- **Studio lighting:** a shadow-casting key light, cyan and blue rim lights, an environment for reflections, and a shadow softness control.
-- **Material controls:** metalness, roughness, clearcoat, transmission, emissive glow, and colour, with an option to override the materials in a loaded file.
-- **Display modes:** wireframe, auto-rotate, floor grid, and three background themes.
-- **Camera tools:** orbit, zoom, pan, front, side, top and 3/4 views, and reset.
-- **Model readouts:** mesh count, triangle count, material count, bounds, and live FPS.
-- **Procedural fallback:** a generated mechanical sculpture appears when no model can be loaded.
-- **Usage guide:** a page that explains what every control does and what it means.
-- **Password gate:** a landing page with a contact list and an unlock box.
-
-## Pages
-
-| File | Purpose |
+| File | What it is |
 |---|---|
-| `index.html` | Landing page with the unlock box and contact list |
-| `viewer.html` | The 3D viewer, locked until the password is entered |
-| `guide.html` | Guide to every button, slider and readout |
+| `index.html` | Home page: unlock box, how access works, contact list |
+| `viewer.html` | The 3D viewer (locked until the password is entered) |
+| `guide.html` | What every button, slider and readout does |
 | `404.html` | Not-found page |
-| `site-config.js` | Contact details, contact list, and the password hash |
-| `gate.js` | Front-end password check |
-| `set-password.js` | Node script that updates the password hash |
-| `model.glb` | Sample model |
+| `site-config.js` | Your email, contact list, and the password hash |
+| `model.glb` | The BMW M4 GT3 sample |
 
-## Run locally
+Default password: **Bayline-GT3-2026**. Change it before you share the site (see below).
 
-The viewer loads files with `fetch` and ES modules, so it needs a local web server (opening the files directly will not work).
+## Host it free
 
-```bash
-git clone https://github.com/[your-username]/[your-repo].git
-cd [your-repo]
-python3 -m http.server 8000
-```
+You cannot get a free `.com`. All three hosts below give you a free address on their own domain, such as `bayline3d.netlify.app`. A custom domain such as `bayline3d.com` costs money (about 10 USD a year) and can be attached later in the host's settings.
 
-Then open http://localhost:8000.
+### Netlify (fastest, no account tools needed)
+1. Go to https://app.netlify.com/drop and sign in.
+2. Drag this whole folder onto the page. The site is live in seconds on a random address.
+3. Site configuration, then Change site name, to pick `yourname.netlify.app`.
 
-## Deploy
+### Cloudflare Pages
+1. Cloudflare dashboard, Workers & Pages, Create, Pages, Upload assets.
+2. Name the project and upload this folder. Your address is `yourname.pages.dev`.
 
-This is a static site with no build step. Upload the folder to any static host:
-
-- **Netlify:** drag the folder onto https://app.netlify.com/drop
-- **Cloudflare Pages:** create a Pages project and upload the folder
-- **GitHub Pages:** publish from the `main` branch in Settings, then Pages
+### GitHub Pages
+1. Create a repository named `yourusername.github.io` and upload these files to it.
+2. Settings, Pages, deploy from the `main` branch. The address is `yourusername.github.io`.
 
 ## Change the password
 
-```bash
+With Node installed, run this in the site folder, then upload the site again:
+
+```
 node set-password.js "your new password"
 ```
 
-This rewrites the hash in `site-config.js`. Commit and redeploy afterwards. The password itself is never stored in the repository.
+Without Node, compute SHA-256 of `bayline-3d::` followed by your password (any online SHA-256 tool works) and paste the result into `hash` in `site-config.js`.
 
-## Customise
+## Add or change contacts
 
-- Edit your name, email and contact list in `site-config.js`.
-- Replace `model.glb` with your own default model, and update the model name in `viewer.html`.
+Edit the `contacts` list in `site-config.js`. Each row has a `label`, `value`, `href`, and `note`.
 
-## Security note
+## Know the limits of the lock
 
-The password gate is a front-end check. It keeps casual visitors out of the viewer page, but the hash and the model file are public files on the host. Anyone who knows the model's URL can download it. If the model must stay private, use host-side access control such as Cloudflare Access, and do not publish the model in a public repository.
-
-## Built with
-
-- [Three.js](https://threejs.org/) (loaded from the jsDelivr CDN)
-- HTML, CSS and vanilla JavaScript
-
-## Contact
-
-Michael: michaelayen001@gmail.com
-
-## Credits
-
-Sample model: [model name, author, and source link]. Used under [model's licence]. The model is not covered by this project's licence.
-
-## License
-
-The source code is released under the MIT License. See [LICENSE](LICENSE).
-
-MIT License
-
-Copyright (c) 2026 [Your Full Name]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The lock is a front-end gate. It stops casual visitors from opening the viewer page, but the password hash and the model file are public files on your host. Someone who knows the address `/model.glb` can download the model without the password, and a determined person can bypass the check in their browser. If the model itself must stay private, use host-side protection instead, such as Cloudflare Access (free for small groups) or Netlify's paid password protection, and do not upload the model to a public site.

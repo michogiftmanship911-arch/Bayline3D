@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bayline 3D</title>
+<meta name="description" content="A private 3D model viewer for engineering and automotive assets. Request the password by email to unlock it.">
+<meta name="theme-color" content="#050d1a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A192F'/%3E%3Crect x='10' y='10' width='12' height='12' rx='2' fill='%2364FFDA'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; align-items: center; padding: 72px 0 40px; }
+.hero-copy { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.hero-copy .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.stats { display: flex; gap: 28px; flex-wrap: wrap; padding-top: 8px; font: 400 12px/1.4 var(--font-mono); color: var(--slate); letter-spacing: .06em; text-transform: uppercase; }
+.stats b { display: block; color: var(--text); font-weight: 500; font-size: 15px; letter-spacing: 0; text-transform: none; margin-bottom: 2px; }
+
+.lock { position: relative; border: 1px solid var(--line); border-radius: 14px; padding: 28px; background: linear-gradient(180deg, rgba(13, 32, 56, .85), rgba(5, 13, 26, .85)); box-shadow: 0 30px 80px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .06); display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.lock-head { display: flex; align-items: center; gap: 14px; }
+.lock-icon { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--cyan); background: var(--cyan-dim); flex: none; }
+.lock-head p { margin: 2px 0 0; color: var(--slate); font-size: 13px; }
+.lock form { display: flex; flex-direction: column; gap: 14px; }
+.lock .msg { min-height: 20px; margin: 0; font-size: 13px; color: var(--danger); }
+.lock .msg.ok { color: var(--cyan); }
+.lock.shake { animation: shake .35s; }
+@keyframes shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.lock .alt { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--slate); }
+.lock .alt .btn { width: 100%; }
+#lockedNote { display: none; border: 1px solid var(--cyan); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--cyan); background: var(--cyan-dim); }
+#lockedNote.on { display: block; }
+
+section.block { padding-top: 96px; display: flex; flex-direction: column; gap: 32px; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; counter-reset: s; }
+.steps li { list-style: none; padding: 24px; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); background: rgba(255, 255, 255, .015); }
+.steps li:first-child { border-left: 0; }
+.steps li::before { counter-increment: s; content: "Step " counter(s); font: 500 11px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); }
+.steps p { margin: 0; color: var(--slate); font-size: 14px; }
+.steps { padding: 0; margin: 0; }
+
+.contacts { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.contact { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 20px 24px; border-top: 1px solid var(--line); background: rgba(255, 255, 255, .015); }
+.contact:first-child { border-top: 0; }
+.contact .k { font: 500 11px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--slate); }
+.contact .v { min-width: 0; }
+.contact .v a, .contact .v span.val { font: 400 17px/1.3 var(--font-mono); color: var(--white); overflow-wrap: anywhere; text-decoration: none; }
+.contact .v a:hover { color: var(--cyan); }
+.contact .v small { display: block; color: var(--slate); font-size: 13px; margin-top: 4px; }
+.contact .acts { display: flex; gap: 8px; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 44px; }
+  .steps { grid-template-columns: 1fr; }
+  .steps li { border-left: 0; border-top: 1px solid var(--line); }
+  .steps li:first-child { border-top: 0; }
+  .contact { grid-template-columns: 1fr; gap: 8px; }
+}
+</style>
+<script src="site-config.js"></script>
+<script src="gate.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="index.html"><i></i>Bayline 3D</a>
+  <nav aria-label="Main">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="guide.html">How to use</a>
+    <a href="#contact">Contact</a>
+    <a class="cta" href="viewer.html" id="navViewer">Open viewer</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Private 3D model viewer</p>
+      <h1>Inspect every surface.</h1>
+      <p class="lede">Orbit, light, and strip back engineering and automotive models in real time. The viewer is locked. Email Michael to get the password, then unlock it here.</p>
+      <div class="actions">
+        <a class="btn primary" href="#unlock" id="heroUnlock">Unlock viewer</a>
+        <a class="btn" href="guide.html">See how it works</a>
+      </div>
+      <div class="stats">
+        <div><b>.glb / .gltf</b>Drag and drop</div>
+        <div><b>Physical lighting</b>Studio rig, 3 themes</div>
+        <div><b>Wireframe</b>Mesh inspection</div>
+      </div>
+    </div>
+
+    <div class="lock" id="unlock">
+      <div id="lockedNote" role="status">That page is locked. Enter the password to continue.</div>
+      <div class="lock-head">
+        <div class="lock-icon" aria-hidden="true">
+          <svg id="lockSvg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path id="shackle" d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        </div>
+        <div><h3 id="lockTitle">Viewer locked</h3><p id="lockSub">Enter the password Michael sent you.</p></div>
+      </div>
+      <form id="unlockForm" autocomplete="off">
+        <div>
+          <label for="pw" style="display:block;margin-bottom:8px;font-size:13px;color:var(--slate)">Password</label>
+          <input id="pw" type="password" placeholder="Enter password" autocomplete="current-password" spellcheck="false" required>
+        </div>
+        <label class="chk"><input type="checkbox" id="remember"> Keep me unlocked on this device</label>
+        <button class="btn primary" type="submit" id="unlockBtn">Unlock</button>
+        <p class="msg" id="msg" role="alert"></p>
+      </form>
+      <div class="alt">
+        <span>No password yet? Request it by email and Michael will reply with it.</span>
+        <a class="btn" id="requestBtn" href="#contact">Request the password</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="how">
+    <div style="display:flex;flex-direction:column;gap:14px"><p class="eyebrow">Access</p><h2>Three steps to the viewer</h2></div>
+    <ol class="steps">
+      <li><h3>Email Michael</h3><p>Use the request button or write to the address in the contact list. Say who you are and what you want to inspect.</p></li>
+      <li><h3>Receive the password</h3><p>Michael replies with the password once he has approved your request.</p></li>
+      <li><h3>Unlock and explore</h3><p>Enter it above. The viewer opens with the BMW M4 GT3 loaded, and the guide explains every control.</p></li>
+    </ol>
+  </section>
+
+  <section class="block" id="contact">
+    <div style="display:flex;flex-direction:column;gap:14px"><p class="eyebrow">Contact</p><h2>Reach Michael</h2></div>
+    <div class="contacts" id="contactList"></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span id="foot"></span>
+  <span><a href="guide.html">How to use</a> &nbsp;·&nbsp; <a href="#contact">Contact</a></span>
+</footer>
+
+<script>
+(function () {
+  var C = window.BAYLINE, G = window.BaylineGate;
+  document.getElementById('foot').textContent = '© ' + new Date().getFullYear() + ' ' + C.brand + '. Access by request.';
+
+  // contact list
+  var list = document.getElementById('contactList');
+  C.contacts.forEach(function (c) {
+    var row = document.createElement('div'); row.className = 'contact';
+    var k = document.createElement('div'); k.className = 'k'; k.textContent = c.label;
+    var v = document.createElement('div'); v.className = 'v';
+    var link = document.createElement('a'); link.href = c.href; link.textContent = c.value;
+    if (/^https?:/.test(c.href)) { link.target = '_blank'; link.rel = 'noopener'; }
+    v.appendChild(link);
+    if (c.note) { var s = document.createElement('small'); s.textContent = c.note; v.appendChild(s); }
+    var acts = document.createElement('div'); acts.className = 'acts';
+    if (c.label === 'Email') {
+      var b = document.createElement('button'); b.className = 'btn sm'; b.type = 'button'; b.textContent = 'Copy';
+      b.addEventListener('click', function () {
+        var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
+        try { navigator.clipboard.writeText(c.value).then(done, function () { b.textContent = 'Select and copy'; }); } catch (e) { b.textContent = 'Select and copy'; }
+      });
+      acts.appendChild(b);
+    }
+    row.append(k, v, acts); list.appendChild(row);
+  });
+  // "Request the password" opens the pre-filled mail, falling back to the contact list
+  var req = C.contacts.filter(function (c) { return c.label === 'Request access'; })[0];
+  if (req) document.getElementById('requestBtn').href = req.href;
+
+  var pw = document.getElementById('pw'), msg = document.getElementById('msg'), box = document.getElementById('unlock');
+  function showUnlocked() {
+    document.getElementById('lockTitle').textContent = 'Viewer unlocked';
+    document.getElementById('lockSub').textContent = 'You can open the viewer now.';
+    document.getElementById('shackle').setAttribute('d', 'M8 11V7a4 4 0 0 1 7.5-2');
+    var f = document.getElementById('unlockForm');
+    f.innerHTML = '<a class="btn primary" href="viewer.html">Open viewer</a><button class="btn" type="button" id="relock">Lock again</button>';
+    document.getElementById('relock').addEventListener('click', function () { G.lock(); location.hash = ''; location.reload(); });
+    document.getElementById('heroUnlock').textContent = 'Open viewer'; document.getElementById('heroUnlock').href = 'viewer.html';
+  }
+  if (G.isUnlocked()) showUnlocked();
+  if (location.hash === '#locked' && !G.isUnlocked()) { document.getElementById('lockedNote').classList.add('on'); }
+
+  var fails = 0, busy = false;
+  document.getElementById('unlockForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); if (busy) return;
+    busy = true; msg.className = 'msg'; msg.textContent = '';
+    var ok = await G.tryUnlock(pw.value, document.getElementById('remember').checked);
+    if (ok) {
+      msg.className = 'msg ok'; msg.textContent = 'Unlocked. Opening the viewer…';
+      setTimeout(function () { location.href = 'viewer.html'; }, 450);
+    } else {
+      fails++; msg.textContent = 'That password does not match. Email Michael to request it.';
+      box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake'); pw.select();
+      await new Promise(function (r) { setTimeout(r, Math.min(fails, 5) * 500); }); // slows repeated guessing
+      busy = false;
+    }
+    if (ok) busy = false;
+  });
+})();
+</script>
+</body>
+</html>
