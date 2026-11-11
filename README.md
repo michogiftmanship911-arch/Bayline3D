@@ -11,7 +11,6 @@ Pages:
 | `site-config.js` | Your email, contact list, and the password hash |
 | `model.glb` | The BMW M4 GT3 sample |
 
-Default password: **Bayline-GT3-2026**. Change it before you share the site (see below).
 
 ## Host it free
 
@@ -30,13 +29,7 @@ https://bayline3d.netlify.app
 1. Create a repository named `yourusername.github.io` and upload these files to it.
 2. Settings, Pages, deploy from the `main` branch. The address is `yourusername.github.io`.
 
-## Change the password
 
-With Node installed, run this in the site folder, then upload the site again:
-
-```
-node set-password.js "your new password"
-```
 
 Without Node, compute SHA-256 of `bayline-3d::` followed by your password (any online SHA-256 tool works) and paste the result into `hash` in `site-config.js`.
 
