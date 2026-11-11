@@ -17,10 +17,10 @@ Default password: **Bayline-GT3-2026**. Change it before you share the site (see
 
 You cannot get a free `.com`. All three hosts below give you a free address on their own domain, such as `bayline3d.netlify.app`. A custom domain such as `bayline3d.com` costs money (about 10 USD a year) and can be attached later in the host's settings.
 
-### Netlify (fastest, no account tools needed)
-1. Go to https://app.netlify.com/drop and sign in.
-2. Drag this whole folder onto the page. The site is live in seconds on a random address.
-3. Site configuration, then Change site name, to pick `yourname.netlify.app`.
+VISIT OUR WEB PAGE AT: 
+https://bayline3d.netlify.app
+
+
 
 ### Cloudflare Pages
 1. Cloudflare dashboard, Workers & Pages, Create, Pages, Upload assets.
