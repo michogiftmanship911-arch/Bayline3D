@@ -40,3 +40,10 @@ Edit the `contacts` list in `site-config.js`. Each row has a `label`, `value`, `
 ## Know the limits of the lock
 
 The lock is a front-end gate. It stops casual visitors from opening the viewer page, but the password hash and the model file are public files on your host. Someone who knows the address `/model.glb` can download the model without the password, and a determined person can bypass the check in their browser. If the model itself must stay private, use host-side protection instead, such as Cloudflare Access (free for small groups) or Netlify's paid password protection, and do not upload the model to a public site.
+
+
+
+
+PASSWORD IS --- 
+
+Bayline-GT3-2026
